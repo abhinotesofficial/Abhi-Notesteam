@@ -269,7 +269,9 @@ export default function App() {
     }
   };
 
-  const visibleChapters = chapters.filter((c) => c.subject === activeSubject);
+  const visibleChapters = chapters
+    .filter((c) => c.subject === activeSubject)
+    .sort((a, b) => Number(b.inStock) - Number(a.inStock));
 
   return (
     <div className="min-h-screen font-body" style={{ backgroundColor: "#F8F6F1", color: "#0F172A" }}>
