@@ -116,6 +116,7 @@ const seedChapters = () => {
         title,
         price: 40,
         blurb: makeBlurb(title),
+        inStock: false,
       });
     });
   });
@@ -170,6 +171,8 @@ export default function App() {
   const total = cartItems.reduce((sum, c) => sum + c.price, 0);
 
   const toggleCart = (id) => {
+    const chapter = chapters.find((c) => c.id === id);
+    if (!chapter || !chapter.inStock) return; // enforce stock at state level
     setCartIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
   const removeFromCart = (id) => setCartIds((prev) => prev.filter((x) => x !== id));
@@ -243,6 +246,7 @@ export default function App() {
         title: newChapter.title.trim(),
         price: Number(newChapter.price) || 40,
         blurb: newChapter.blurb.trim() || makeBlurb(newChapter.title.trim()),
+        inStock: false,
       },
     ]);
     setNewChapter({ subject: newChapter.subject, title: "", blurb: "", price: 40 });
@@ -251,6 +255,18 @@ export default function App() {
   const handleDeleteChapter = (id) => {
     setChapters((prev) => prev.filter((c) => c.id !== id));
     setCartIds((prev) => prev.filter((x) => x !== id));
+  };
+
+  const handleToggleStock = (id) => {
+    const chapter = chapters.find((c) => c.id === id);
+    const willBeOos = chapter ? chapter.inStock : false; // toggling: if currently inStock, will become OOS
+    setChapters((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, inStock: !c.inStock } : c))
+    );
+    if (willBeOos) {
+      // Chapter is going out of stock — remove from cart
+      setCartIds((ids) => ids.filter((x) => x !== id));
+    }
   };
 
   const visibleChapters = chapters.filter((c) => c.subject === activeSubject);
@@ -347,6 +363,7 @@ export default function App() {
             <div className="grid sm:grid-cols-2 gap-4">
               {visibleChapters.map((c) => {
                 const inCart = cartIds.includes(c.id);
+                const oos = !c.inStock;
                 return (
                   <div
                     key={c.id}
@@ -354,9 +371,19 @@ export default function App() {
                     style={{ borderColor: "#E2E8F0" }}
                   >
                     <div>
-                      <h3 className="font-display font-bold text-base leading-snug" style={{ color: "#0F172A" }}>
-                        {c.title}
-                      </h3>
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-display font-bold text-base leading-snug" style={{ color: "#0F172A" }}>
+                          {c.title}
+                        </h3>
+                        {oos && (
+                          <span
+                            className="shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: "#FEE2E2", color: "#DC2626" }}
+                          >
+                            Out of Stock
+                          </span>
+                        )}
+                      </div>
                       <p className="mt-2 text-sm leading-relaxed" style={{ color: "#64748B" }}>
                         {c.blurb}
                       </p>
@@ -366,15 +393,18 @@ export default function App() {
                         {inr(c.price)}
                       </span>
                       <button
-                        onClick={() => toggleCart(c.id)}
+                        onClick={() => !oos && toggleCart(c.id)}
+                        disabled={oos}
                         className="text-sm font-semibold px-4 py-2 rounded-md transition-colors"
                         style={
-                          inCart
+                          oos
+                            ? { backgroundColor: "#E2E8F0", color: "#94A3B8", cursor: "not-allowed" }
+                            : inCart
                             ? { backgroundColor: "#E2E8F0", color: "#0F172A" }
                             : { backgroundColor: "#0F172A", color: "#F8F6F1" }
                         }
                       >
-                        {inCart ? "Added ✓" : "Add to Bundle"}
+                        {oos ? "Out of Stock" : inCart ? "Added ✓" : "Add to Bundle"}
                       </button>
                     </div>
                   </div>
@@ -650,6 +680,7 @@ export default function App() {
                       <th className="py-2 pr-3">Subject</th>
                       <th className="py-2 pr-3">Title</th>
                       <th className="py-2 pr-3">Price</th>
+                      <th className="py-2 pr-3 text-center">Stock</th>
                       <th className="py-2 pr-3"></th>
                     </tr>
                   </thead>
@@ -659,6 +690,23 @@ export default function App() {
                         <td className="py-2 pr-3 whitespace-nowrap" style={{ color: "#D97706" }}>{c.subject}</td>
                         <td className="py-2 pr-3">{c.title}</td>
                         <td className="py-2 pr-3 font-mono">{inr(c.price)}</td>
+                        <td className="py-2 pr-3 text-center">
+                          <button
+                            onClick={() => handleToggleStock(c.id)}
+                            className="relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                            style={
+                              c.inStock
+                                ? { backgroundColor: "#D1FAE5", color: "#065F46" }
+                                : { backgroundColor: "#FEE2E2", color: "#DC2626" }
+                            }
+                          >
+                            <span
+                              className="inline-block w-2 h-2 rounded-full"
+                              style={{ backgroundColor: c.inStock ? "#10B981" : "#DC2626" }}
+                            />
+                            {c.inStock ? "In Stock" : "Out of Stock"}
+                          </button>
+                        </td>
                         <td className="py-2 pr-3 text-right">
                           <button
                             onClick={() => handleDeleteChapter(c.id)}
