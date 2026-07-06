@@ -128,7 +128,7 @@ const CONTACTS = [
 ];
 
 const ORDER_WA_NUMBER = "919458368861"; // Yash — primary/sales
-const DOUBT_WA_NUMBER = "917409568511"; // Abhirup — support/general
+const DOUBT_WA_NUMBER = "919458368861"; // Yash — doubt clearance
 const ADMIN_CODE = "abhi2026";
 
 const inr = (n) => `\u20B9${n}`;
