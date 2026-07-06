@@ -114,7 +114,7 @@ const seedChapters = () => {
         id: _id,
         subject,
         title,
-        price: 40,
+        price: "XX",
         blurb: makeBlurb(title),
         inStock: false,
       });
@@ -162,13 +162,13 @@ export default function App() {
   const [adminCodeInput, setAdminCodeInput] = useState("");
   const [adminGateError, setAdminGateError] = useState("");
   const [showAdmin, setShowAdmin] = useState(false);
-  const [newChapter, setNewChapter] = useState({ subject: "Mathematics", title: "", blurb: "", price: 40 });
+  const [newChapter, setNewChapter] = useState({ subject: "Mathematics", title: "", blurb: "", price: "XX" });
 
   const cartItems = useMemo(
     () => cartIds.map((id) => chapters.find((c) => c.id === id)).filter(Boolean),
     [cartIds, chapters]
   );
-  const total = cartItems.reduce((sum, c) => sum + c.price, 0);
+  const total = cartItems.reduce((sum, c) => sum + (c.price === "XX" ? 0 : Number(c.price)), 0);
 
   const toggleCart = (id) => {
     const chapter = chapters.find((c) => c.id === id);
@@ -244,12 +244,12 @@ export default function App() {
         id: _id,
         subject: newChapter.subject,
         title: newChapter.title.trim(),
-        price: Number(newChapter.price) || 40,
+        price: newChapter.price === "XX" || !String(newChapter.price).trim() ? "XX" : Number(newChapter.price) || "XX",
         blurb: newChapter.blurb.trim() || makeBlurb(newChapter.title.trim()),
         inStock: false,
       },
     ]);
-    setNewChapter({ subject: newChapter.subject, title: "", blurb: "", price: 40 });
+    setNewChapter({ subject: newChapter.subject, title: "", blurb: "", price: "XX" });
   };
 
   const handleDeleteChapter = (id) => {
@@ -629,9 +629,9 @@ export default function App() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold" style={{ color: "#64748B" }}>Price (₹)</label>
+                  <label className="text-xs font-semibold" style={{ color: "#64748B" }}>Price (₹ or XX)</label>
                   <input
-                    type="number"
+                    type="text"
                     value={newChapter.price}
                     onChange={(e) => setNewChapter((f) => ({ ...f, price: e.target.value }))}
                     className="w-full mt-1 rounded-md px-3 py-2.5 text-sm border outline-none font-mono"
