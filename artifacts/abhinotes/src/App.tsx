@@ -125,7 +125,7 @@ const seedChapters = () => {
 
 const CONTACTS = [
   { name: "Yash", role: "Primary & Sales/Pricing", numbers: ["9458368861", "9997167138"] },
-  { name: "Abhirup", role: "Support & General", numbers: ["7409568511", "8273807280"] },
+  { name: "Abhiroop", role: "Support & General", numbers: ["9174095 68511"] },
 ];
 
 const ORDER_WA_NUMBER = "919458368861"; // Yash — primary/sales
@@ -451,6 +451,13 @@ export default function App() {
                   >
                     Send to Manit
                   </button>
+                  <button
+                    onClick={() => handleSubmitDoubt("917409568511")}
+                    className="px-6 py-3 rounded-md font-semibold text-sm transition-transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: "#D97706", color: "#0F172A" }}
+                  >
+                    Send to Abhiroop
+                  </button>
                 </div>
               </div>
             </section>
@@ -557,7 +564,7 @@ export default function App() {
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowAdminGate(false)} />
           <div className="relative bg-white rounded-xl p-6 w-full max-w-sm">
             <h3 className="font-display font-bold text-lg mb-1" style={{ color: "#0F172A" }}>Operations Control Room</h3>
-            <p className="text-sm mb-4" style={{ color: "#64748B" }}>Access restricted to Abhirup & Yash. Enter access code.</p>
+            <p className="text-sm mb-4" style={{ color: "#64748B" }}>Access restricted to Abhiroop & Yash. Enter access code.</p>
             <input
               type="password"
               value={adminCodeInput}
