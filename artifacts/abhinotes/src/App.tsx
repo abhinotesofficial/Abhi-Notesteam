@@ -171,8 +171,6 @@ export default function App() {
   const total = cartItems.reduce((sum, c) => sum + (c.price === "XX" ? 0 : Number(c.price)), 0);
 
   const toggleCart = (id) => {
-    const chapter = chapters.find((c) => c.id === id);
-    if (!chapter || !chapter.inStock) return; // enforce stock at state level
     setCartIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
   const removeFromCart = (id) => setCartIds((prev) => prev.filter((x) => x !== id));
@@ -258,15 +256,9 @@ export default function App() {
   };
 
   const handleToggleStock = (id) => {
-    const chapter = chapters.find((c) => c.id === id);
-    const willBeOos = chapter ? chapter.inStock : false; // toggling: if currently inStock, will become OOS
     setChapters((prev) =>
       prev.map((c) => (c.id === id ? { ...c, inStock: !c.inStock } : c))
     );
-    if (willBeOos) {
-      // Chapter is going out of stock — remove from cart
-      setCartIds((ids) => ids.filter((x) => x !== id));
-    }
   };
 
   const visibleChapters = chapters
@@ -395,18 +387,15 @@ export default function App() {
                         {inr(c.price)}
                       </span>
                       <button
-                        onClick={() => !oos && toggleCart(c.id)}
-                        disabled={oos}
+                        onClick={() => toggleCart(c.id)}
                         className="text-sm font-semibold px-4 py-2 rounded-md transition-colors"
                         style={
-                          oos
-                            ? { backgroundColor: "#E2E8F0", color: "#94A3B8", cursor: "not-allowed" }
-                            : inCart
+                          inCart
                             ? { backgroundColor: "#E2E8F0", color: "#0F172A" }
                             : { backgroundColor: "#0F172A", color: "#F8F6F1" }
                         }
                       >
-                        {oos ? "Out of Stock" : inCart ? "Added ✓" : "Add to Bundle"}
+                        {inCart ? "Added ✓" : "Add to Bundle"}
                       </button>
                     </div>
                   </div>
