@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "AbhiNotes"
+version = "1.0.0"
+id = "artifacts/abhinotes"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24224
+
+[services.development]
+run = "pnpm --filter @workspace/abhinotes run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/abhinotes", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/abhinotes/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24224"
+BASE_PATH = "/"
