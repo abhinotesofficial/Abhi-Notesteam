@@ -200,7 +200,7 @@ export default function App() {
     window.open(url, "_blank");
   };
 
-  const handleSubmitDoubt = () => {
+  const handleSubmitDoubt = (toNumber) => {
     if (!doubtForm.question.trim() || !doubtForm.whatsapp.trim()) {
       setDoubtWarning("Please enter your question and your WhatsApp number.");
       return;
@@ -214,7 +214,7 @@ export default function App() {
       "Question:",
       doubtForm.question,
     ].join("\n");
-    const url = `https://wa.me/${DOUBT_WA_NUMBER}?text=${encodeURIComponent(lines)}`;
+    const url = `https://wa.me/${toNumber}?text=${encodeURIComponent(lines)}`;
     window.open(url, "_blank");
     setDoubtSent(true);
     setDoubtForm({ question: "", whatsapp: "" });
@@ -415,13 +415,22 @@ export default function App() {
                 />
                 {doubtWarning && <p className="text-sm" style={{ color: "#F87171" }}>{doubtWarning}</p>}
                 {doubtSent && <p className="text-sm" style={{ color: "#34D399" }}>Sent! Opening WhatsApp…</p>}
-                <button
-                  onClick={handleSubmitDoubt}
-                  className="justify-self-start px-6 py-3 rounded-md font-semibold text-sm transition-transform hover:-translate-y-0.5"
-                  style={{ backgroundColor: "#D97706", color: "#0F172A" }}
-                >
-                  Submit Doubt
-                </button>
+                <div className="flex gap-3 flex-wrap">
+                  <button
+                    onClick={() => handleSubmitDoubt("919458368861")}
+                    className="px-6 py-3 rounded-md font-semibold text-sm transition-transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: "#D97706", color: "#0F172A" }}
+                  >
+                    Send to Yash
+                  </button>
+                  <button
+                    onClick={() => handleSubmitDoubt("918273807280")}
+                    className="px-6 py-3 rounded-md font-semibold text-sm transition-transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: "#D97706", color: "#0F172A" }}
+                  >
+                    Send to Manit
+                  </button>
+                </div>
               </div>
             </section>
 
