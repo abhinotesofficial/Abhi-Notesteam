@@ -102,18 +102,121 @@ const RAW_TITLES = {
   ],
 };
 
+const CBSE_RAW_TITLES = {
+  Mathematics: [
+    "Real Numbers",
+    "Polynomials",
+    "Pair of Linear Equations in Two Variables",
+    "Quadratic Equations",
+    "Arithmetic Progressions",
+    "Coordinate Geometry",
+    "Triangles",
+    "Circles",
+    "Introduction to Trigonometry",
+    "Some Applications of Trigonometry",
+    "Surface Areas and Volumes",
+    "Statistics",
+    "Probability",
+  ],
+  Science: [
+    "Chemical Reactions and Equations",
+    "Acids Bases and Salts",
+    "Metals and Non-metals",
+    "Carbon and its Compounds",
+    "Life Processes",
+    "Control and Coordination",
+    "How do Organisms Reproduce?",
+    "Heredity",
+    "Light – Reflection and Refraction",
+    "The Human Eye and the Colorful World",
+    "Electricity",
+    "Magnetic Effects of Electric Current",
+    "Our Environment",
+  ],
+  SST: [
+    "History: The Rise of Nationalism in Europe",
+    "History: Nationalism in India",
+    "History: The Making of a Global World",
+    "History: The Age of Industrialization",
+    "History: Print Culture and the Modern World",
+    "Geography: Resources and Development",
+    "Geography: Forest and Wildlife Resources",
+    "Geography: Water Resources",
+    "Geography: Agriculture",
+    "Geography: Minerals and Energy Resources",
+    "Geography: Manufacturing Industries",
+    "Geography: Lifelines of National Economy",
+    "Civics: Power Sharing",
+    "Civics: Federalism",
+    "Civics: Gender Religion and Caste",
+    "Civics: Political Parties",
+    "Civics: Outcomes of Democracy",
+    "Economics: Development",
+    "Economics: Sectors of the Indian Economy",
+    "Economics: Money and Credit",
+    "Economics: Globalization and the Indian Economy",
+    "Economics: Consumer Rights",
+  ],
+  English: [
+    "Prose: A Letter to God",
+    "Prose: Nelson Mandela: Long Walk to Freedom",
+    "Prose: Two Stories about Flying",
+    "Prose: From the Diary of Anne Frank",
+    "Prose: Glimpses of India",
+    "Prose: Mijbil the Otter",
+    "Prose: Madam Rides the Bus",
+    "Prose: The Sermon at Benares",
+    "Prose: The Proposal (Play)",
+    "Poetry: Dust of Snow",
+    "Poetry: Fire and Ice",
+    "Poetry: A Tiger in the Zoo",
+    "Poetry: How to Tell Wild Animals",
+    "Poetry: The Ball Poem",
+    "Poetry: Amanda!",
+    "Poetry: The Trees",
+    "Poetry: Fog",
+    "Poetry: The Tale of Custard the Dragon",
+    "Poetry: For Anne Gregory",
+    "Supplementary: A Triumph of Surgery",
+    "Supplementary: The Thief's Story",
+    "Supplementary: The Midnight Visitor",
+    "Supplementary: A Question of Trust",
+    "Supplementary: Footprints without Feet",
+    "Supplementary: The Making of a Scientist",
+    "Supplementary: The Necklace",
+    "Supplementary: Bholi",
+    "Supplementary: The Book That Saved the Earth",
+  ],
+};
+
 const makeBlurb = (title) =>
   `Crisp, exam-focused notes on ${title.split(":").pop().trim()} — Includes Core Keywords & Clear Flowcharts.`;
 
 let _id = 0;
 const seedChapters = () => {
   const list = [];
+  // ICSE chapters
   SUBJECTS.forEach((subject) => {
     RAW_TITLES[subject].forEach((title) => {
       _id += 1;
       list.push({
         id: _id,
         board: "ICSE",
+        subject,
+        title,
+        price: "XX",
+        blurb: makeBlurb(title),
+        inStock: false,
+      });
+    });
+  });
+  // CBSE chapters
+  SUBJECTS.forEach((subject) => {
+    CBSE_RAW_TITLES[subject].forEach((title) => {
+      _id += 1;
+      list.push({
+        id: _id,
+        board: "CBSE",
         subject,
         title,
         price: "XX",
