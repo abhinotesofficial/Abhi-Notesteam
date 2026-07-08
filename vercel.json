@@ -1,4 +1,5 @@
 {
-"build command": "pnpm install && pnpm --filter @workspace/abhinotes run build" ,
-"outputDirectory": "pnpm install"
+"buildCommand": "pnpm install && pnpm --filter @workspace/abhinotes run build" ,
+"outputDirectory": "dis/public"
+  "installCommand" : "pnpm install"
 }
