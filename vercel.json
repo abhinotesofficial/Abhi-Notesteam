@@ -1,5 +1,4 @@
 {
-  "buildCommand": "pnpm install && pnpm --filter @workspace/abhinotes run build",
-  "outputDirectory": "artifacts/abhinotes/dist/public",
-  "installCommand": "pnpm install"
+"build command": "pnpm install && pnpm --filter @workspace/abhinotes run build" ,
+"outputDirectory": "pnpm install"
 }
